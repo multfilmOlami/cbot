@@ -1,17 +1,12 @@
 import TelegramBot from "node-telegram-bot-api";
 import fetch from "node-fetch";
-import dotenv from "dotenv";
 
-// ENV ni yoqamiz
-
-// TOKEN va API KEY ni env dan olamiz
+// Render’da kiritgan o‘zgaruvchilarimizni olamiz
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CUTY_API_KEY = process.env.CUTY_API_KEY;
 
-// Botni ishga tushiramiz
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
-// /start komandasi
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(
     msg.chat.id,
@@ -19,15 +14,13 @@ bot.onText(/\/start/, (msg) => {
   );
 });
 
-// Oddiy xabarlar
 bot.on("message", async (msg) => {
-  if (!msg.text) return;
-  if (msg.text.startsWith("/")) return;
+  if (!msg.text || msg.text.startsWith("/")) return;
 
   const url = msg.text.trim();
 
   if (!url.startsWith("http")) {
-    return bot.sendMessage(msg.chat.id, "❌ To‘g‘ri link yuboring.");
+    return bot.sendMessage(msg.chat.id, "❌ Iltimos, to‘g‘ri link yuboring.");
   }
 
   try {
@@ -42,10 +35,10 @@ bot.on("message", async (msg) => {
         `✅ Qisqartirilgan link:\n${data.shortenedUrl}`
       );
     } else {
-      bot.sendMessage(msg.chat.id, "⚠️ Xatolik yuz berdi.");
+      bot.sendMessage(msg.chat.id, "⚠️ Xatolik: API kalit yoki linkda muammo.");
     }
   } catch (err) {
     console.error(err);
-    bot.sendMessage(msg.chat.id, "🚫 Server xatosi.");
+    bot.sendMessage(msg.chat.id, "🚫 Server xatosi yuz berdi.");
   }
 });
