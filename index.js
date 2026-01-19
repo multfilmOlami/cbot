@@ -3,7 +3,6 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 
 // ENV ni yoqamiz
-dotenv.config();
 
 // TOKEN va API KEY ni env dan olamiz
 const BOT_TOKEN = process.env.BOT_TOKEN;
